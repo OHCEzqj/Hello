@@ -1,1 +1,1 @@
-这是基于webview的简单浏览器
+杩欐槸浣跨敤webview鐨勭畝鍗曟祻瑙堝櫒
