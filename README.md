@@ -1,4 +1,4 @@
-﻿# 这是用来简单提交一些小的damo项目
+# 这是用来简单提交一些小的damo项目
 - <a href="https://github.com/OHCEzqj/Hello/tree/master/Alpha"><b><font size='6' color='red'>登录动画效果</font></b></a>
 
 图片透明度逐渐降低，产生动画效果，完全消失后登录
@@ -23,3 +23,6 @@ Android WebView简单浏览器
 
 使用Zxing进行二维码简单的扫描与生成
 
+- <a href="https://github.com/OHCEzqj/Hello/tree/master/ScreenShow"><b><font size='6' color='red'>远程屏幕监听</font></b></a>
+	- TCP通信，实现PC端监听PC端
+	- UDP通信，实现手机端监听PC端
