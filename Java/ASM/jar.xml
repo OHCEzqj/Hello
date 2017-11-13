@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<project name="build jar" default="build" basedir=".">
+    <!-- jar源代码放置处 -->
+    <property name="src" value="src"/>
+    <!-- jar变异class放置处 -->
+    <property name="bin" value="bin"/>
+    <!-- jar包放置处 -->
+    <property name="lib" value="lib"/>
+    
+    <target name="clean" description="clean the bin classes">
+        <delete dir="${bin}"/>
+    </target>
+    
+    <target name="compile" description="compile the java source code" depends="clean" >
+        <mkdir dir="${bin}"/>
+        <javac debug="true" srcdir="${src}" destdir="${bin}"> 
+     </javac>
+        
+    </target>
+    
+    <target name="build" description="jar building" >
+        <jar jarfile="${lib}/jacocoant.jar"
+            basedir="${bin}"/>
+    </target>
+</project>
+
