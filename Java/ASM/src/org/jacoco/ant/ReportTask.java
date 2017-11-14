@@ -507,8 +507,7 @@ public class ReportTask extends Task {
 		final ExecFileLoader loader = new ExecFileLoader();
 		for (final Iterator<?> i = executiondataElement.iterator(); i.hasNext();) {
 			final Resource resource = (Resource) i.next();
-			log(format("ZQJ!!!:Loading execution data file %s", resource));
-			System.out.println("This is OUT System");
+			log(format("Loading execution data file %s", resource));
 			InputStream in = null;
 			try {
 				in = resource.getInputStream();

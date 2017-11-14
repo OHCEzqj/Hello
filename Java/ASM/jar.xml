@@ -23,6 +23,8 @@
     <target name="build" description="jar building" >
         <jar jarfile="${lib}/jacocoant.jar"
             basedir="${bin}"/>
+        <jar jarfile="${lib}/jacocoagent.jar"
+            basedir="${bin}"/>
     </target>
 </project>
 
