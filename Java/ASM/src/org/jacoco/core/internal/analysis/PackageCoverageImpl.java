@@ -44,8 +44,11 @@ public class PackageCoverageImpl extends CoverageNodeImpl implements
 		super(ElementType.PACKAGE, name);
 		this.classes = classes;
 		this.sourceFiles = sourceFiles;
+		System.out.println("PackageCoverageImpl increment(sourceFiles);");
 		increment(sourceFiles);
+		System.out.println("PackageCoverageImpl increment(sourceFiles); End");
 		for (final IClassCoverage c : classes) {
+			System.out.println("PackageCoverageImpl IClassCoverage c : classes");
 			// We need to add only classes without a source file reference.
 			// Classes associated with a source file are already included in the
 			// SourceFileCoverage objects.
@@ -53,11 +56,13 @@ public class PackageCoverageImpl extends CoverageNodeImpl implements
 				increment(c);
 			}
 		}
+		System.out.println("PackageCoverageImpl End");
 	}
 
 	// === IPackageCoverage implementation ===
 
 	public Collection<IClassCoverage> getClasses() {
+		System.out.println("PackageCoverageImpl getClasses()");
 		return classes;
 	}
 

@@ -25,6 +25,7 @@ public abstract class CounterImpl implements ICounter {
 	private static final CounterImpl[][] SINGLETONS = new CounterImpl[SINGLETON_LIMIT + 1][];
 
 	static {
+		System.out.println("CounterImpl static ");
 		for (int i = 0; i <= SINGLETON_LIMIT; i++) {
 			SINGLETONS[i] = new CounterImpl[SINGLETON_LIMIT + 1];
 			for (int j = 0; j <= SINGLETON_LIMIT; j++) {
@@ -48,10 +49,12 @@ public abstract class CounterImpl implements ICounter {
 	private static class Var extends CounterImpl {
 		public Var(final int missed, final int covered) {
 			super(missed, covered);
+			System.out.println("CounterImpl Var ");
 		}
 
 		@Override
 		public CounterImpl increment(final int missed, final int covered) {
+			System.out.println(" CounterImpl var increment missed+covered"+missed+covered);
 			this.missed += missed;
 			this.covered += covered;
 			return this;
@@ -62,12 +65,14 @@ public abstract class CounterImpl implements ICounter {
 	 * Immutable version of the counter.
 	 */
 	private static class Fix extends CounterImpl {
-		public Fix(final int missed, final int covered) {
+		public Fix(final int missed, final int covered) {	
 			super(missed, covered);
+			System.out.println(" CounterImpl Fix构造函数"+missed+"	"+covered);
 		}
 
 		@Override
 		public CounterImpl increment(final int missed, final int covered) {
+			System.out.println(" CounterImpl Fix increment missed+covered"+missed+covered);
 			return getInstance(this.missed + missed, this.covered + covered);
 		}
 	}
@@ -82,9 +87,12 @@ public abstract class CounterImpl implements ICounter {
 	 * @return counter instance
 	 */
 	public static CounterImpl getInstance(final int missed, final int covered) {
+		System.out.println("CounterImpl getInstance missed covered");
 		if (missed <= SINGLETON_LIMIT && covered <= SINGLETON_LIMIT) {
+			System.out.println(" CounterImpl getInstance SINGLETONS[][]"+missed+covered);
 			return SINGLETONS[missed][covered];
 		} else {
+			System.out.println(" CounterImpl getInstance Var[][]"+missed+covered);
 			return new Var(missed, covered);
 		}
 	}
@@ -97,6 +105,7 @@ public abstract class CounterImpl implements ICounter {
 	 * @return counter instance
 	 */
 	public static CounterImpl getInstance(final ICounter counter) {
+		System.out.println("CounterImpl getInstance(final ICounter counter ");
 		return getInstance(counter.getMissedCount(), counter.getCoveredCount());
 	}
 
@@ -115,6 +124,7 @@ public abstract class CounterImpl implements ICounter {
 	 *            number of covered items
 	 */
 	protected CounterImpl(final int missed, final int covered) {
+		System.out.println("构造函数CounterImpl(final int missed, final int covered) "+missed+"	"+covered);
 		this.missed = missed;
 		this.covered = covered;
 	}
@@ -129,6 +139,7 @@ public abstract class CounterImpl implements ICounter {
 	 * @return counter instance with incremented values
 	 */
 	public CounterImpl increment(final ICounter counter) {
+		System.out.println("CounterImpl increment(final ICounter counter) ");
 		return increment(counter.getMissedCount(), counter.getCoveredCount());
 	}
 
@@ -165,22 +176,28 @@ public abstract class CounterImpl implements ICounter {
 	}
 
 	public int getTotalCount() {
+		int i=missed + covered;
+		System.out.println("CounterImpl getTotalCount	"+i);
 		return missed + covered;
 	}
 
 	public int getCoveredCount() {
+		System.out.println("CounterImpl getCoveredCount	"+covered);
 		return covered;
 	}
 
 	public int getMissedCount() {
+		System.out.println("CounterImpl getMissedCount	"+missed);
 		return missed;
 	}
 
 	public double getCoveredRatio() {
+		System.out.println("CounterImpl getCoveredRatio	"+(double) covered / (missed + covered));
 		return (double) covered / (missed + covered);
 	}
 
 	public double getMissedRatio() {
+		System.out.println("CounterImpl getMissedRatio	"+(double) missed / (missed + covered));
 		return (double) missed / (missed + covered);
 	}
 

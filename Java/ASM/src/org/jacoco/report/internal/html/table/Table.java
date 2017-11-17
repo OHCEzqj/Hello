@@ -88,6 +88,9 @@ public class Table {
 			final List<? extends ITableItem> items, final ICoverageNode total,
 			final Resources resources, final ReportOutputFolder base)
 			throws IOException {
+
+		System.out.println("Table render");
+		
 		final List<? extends ITableItem> sortedItems = sort(items);
 		final HTMLElement table = parent.table(Styles.COVERAGETABLE);
 		table.attr("id", "coveragetable");

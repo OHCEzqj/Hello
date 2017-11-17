@@ -47,7 +47,9 @@ public abstract class TablePage<NodeType extends ICoverageNode> extends
 	 */
 	protected TablePage(final NodeType node, final ReportPage parent,
 			final ReportOutputFolder folder, final IHTMLReportContext context) {
+		
 		super(node, parent, folder, context);
+		System.out.println("TablePage 构造函数");
 	}
 
 	/**

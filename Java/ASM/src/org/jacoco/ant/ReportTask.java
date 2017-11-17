@@ -534,24 +534,35 @@ public class ReportTask extends Task {
 
 	private void createReport(final IReportGroupVisitor visitor,
 			final GroupElement group) throws IOException {
+		System.out.println("createReport");
 		if (group.name == null) {
 			throw new BuildException("Group name must be supplied",
 					getLocation());
 		}
 		if (group.children.isEmpty()) {
 			final IBundleCoverage bundle = createBundle(group);
+
+            System.out.println("ReportTask SourceFilesElement sourcefiles");
 			final SourceFilesElement sourcefiles = group.sourcefiles;
+
+		   System.out.println("ReportTask SourceFilesElement sourcefiles");
 			final AntResourcesLocator locator = new AntResourcesLocator(
 					sourcefiles.encoding, sourcefiles.tabWidth);
+
+		   System.out.println("ReportTask locator.addAll(sourcefiles.iterator());");
 			locator.addAll(sourcefiles.iterator());
+
 			if (!locator.isEmpty()) {
+                System.out.println("ReportTask checkForMissingDebugInformation(bundle);");
 				checkForMissingDebugInformation(bundle);
 			}
+
 			visitor.visitBundle(bundle, locator);
 		} else {
 			final IReportGroupVisitor groupVisitor = visitor
 					.visitGroup(group.name);
 			for (final GroupElement child : group.children) {
+				 System.out.println("ReportTask createReport(groupVisitor, child)");
 				createReport(groupVisitor, child);
 			}
 		}
@@ -559,9 +570,11 @@ public class ReportTask extends Task {
 
 	private IBundleCoverage createBundle(final GroupElement group)
 			throws IOException {
+				System.out.println("ReportTask createBundle");
 		final CoverageBuilder builder = new CoverageBuilder();
 		final Analyzer analyzer = new Analyzer(executionDataStore, builder);
 		for (final Iterator<?> i = group.classfiles.iterator(); i.hasNext();) {
+			System.out.println("ReportTask createBundle analyzer for");
 			final Resource resource = (Resource) i.next();
 			if (resource.isDirectory() && resource instanceof FileResource) {
 				analyzer.analyzeAll(((FileResource) resource).getFile());
@@ -571,8 +584,10 @@ public class ReportTask extends Task {
 				in.close();
 			}
 		}
+		System.out.println("ReportTask createBundle analyzer End");
 		final IBundleCoverage bundle = builder.getBundle(group.name);
 		logBundleInfo(bundle, builder.getNoMatchClasses());
+		System.out.println("ReportTask createBundle End");
 		return bundle;
 	}
 

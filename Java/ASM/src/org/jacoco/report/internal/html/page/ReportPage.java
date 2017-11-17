@@ -49,6 +49,7 @@ public abstract class ReportPage implements ILinkable {
 	 */
 	protected ReportPage(final ReportPage parent,
 			final ReportOutputFolder folder, final IHTMLReportContext context) {
+		System.out.println("ReportPage 构造函数");
 		this.parent = parent;
 		this.context = context;
 		this.folder = folder;
@@ -71,12 +72,17 @@ public abstract class ReportPage implements ILinkable {
 	 *             if the page can't be written
 	 */
 	public void render() throws IOException {
+
+		System.out.println("ReportPage render");
+
 		final HTMLDocument doc = new HTMLDocument(
 				folder.createFile(getFileName()), context.getOutputEncoding());
 		doc.attr("lang", context.getLocale().getLanguage());
 		head(doc.head());
 		body(doc.body());
 		doc.close();
+		
+		System.out.println("ReportPage render End");
 	}
 
 	/**
@@ -87,6 +93,7 @@ public abstract class ReportPage implements ILinkable {
 	 * @throws IOException
 	 *             in case of IO problems with the report writer
 	 */
+	//头部
 	protected void head(final HTMLElement head) throws IOException {
 		head.meta("Content-Type", "text/html;charset=UTF-8");
 		head.link("stylesheet",
@@ -145,7 +152,7 @@ public abstract class ReportPage implements ILinkable {
 			div.text(" > ");
 		}
 	}
-
+//脚注
 	private void footer(final HTMLElement body) throws IOException {
 		final HTMLElement footer = body.div(Styles.FOOTER);
 		final HTMLElement versioninfo = footer.span(Styles.RIGHT);

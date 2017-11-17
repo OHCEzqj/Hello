@@ -46,9 +46,12 @@ public class MethodCoverageImpl extends SourceNodeImpl implements
 			final int line) {
 		super.increment(instructions, branches, line);
 		// Additionally increment complexity counter:
-		if (branches.getTotalCount() > 1) {
+		if (branches.getTotalCount() > 1) {//如果说是分支，如if的话调用这个
+			System.out.println("MethodCoverageImpl increment getTotalCount=	"+branches.getTotalCount());
+			System.out.println("MethodCoverageImpl increment line=	"+line);
 			final int c = Math.max(0, branches.getCoveredCount() - 1);
 			final int m = Math.max(0, branches.getTotalCount() - c - 1);
+			System.out.println("MethodCoverageImpl increment c&m:=	"+c+""	+m);
 			this.complexityCounter = this.complexityCounter.increment(m, c);
 		}
 	}
@@ -58,9 +61,12 @@ public class MethodCoverageImpl extends SourceNodeImpl implements
 	 * branches have been incremented for this method coverage node.
 	 */
 	public void incrementMethodCounter() {
+		System.out.println("MethodCoverageImpl incrementMethodCounter	");
 		final ICounter base = this.instructionCounter.getCoveredCount() == 0 ? CounterImpl.COUNTER_1_0
 				: CounterImpl.COUNTER_0_1;
+		System.out.println("MethodCoverageImpl incrementMethodCounter	methodCounter");
 		this.methodCounter = this.methodCounter.increment(base);
+		System.out.println("MethodCoverageImpl incrementMethodCounter	complexityCounter");
 		this.complexityCounter = this.complexityCounter.increment(base);
 	}
 

@@ -37,6 +37,7 @@ public class SourceFileCoverageImpl extends SourceNodeImpl implements
 	// === ISourceFileCoverage implementation ===
 
 	public String getPackageName() {
+		System.out.println("SourceFileCoverageImpl getPackageName 	"+packagename);
 		return packagename;
 	}
 

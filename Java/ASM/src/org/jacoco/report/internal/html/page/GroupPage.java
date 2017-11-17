@@ -36,6 +36,7 @@ public class GroupPage extends TablePage<ICoverageNode> {
 	public GroupPage(final ICoverageNode node, final ReportPage parent,
 			final ReportOutputFolder folder, final IHTMLReportContext context) {
 		super(node, parent, folder, context);
+		System.out.println("GroupPage 构造函数");	
 	}
 
 	@Override

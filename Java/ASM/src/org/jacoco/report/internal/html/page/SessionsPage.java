@@ -73,6 +73,7 @@ public class SessionsPage extends ReportPage {
 			final ElementIndex index, final ReportPage parent,
 			final ReportOutputFolder folder, final IHTMLReportContext context) {
 		super(parent, folder, context);
+		System.out.println("SessionsPage ");
 		this.sessionInfos = sessionInfos;
 		this.executionData = new ArrayList<ExecutionData>(executionData);
 		this.index = index;
@@ -129,7 +130,9 @@ public class SessionsPage extends ReportPage {
 		}
 		final HTMLElement tbody = table.tbody();
 		final ILanguageNames names = context.getLanguageNames();
+		//有几个类
 		for (final ExecutionData e : executionData) {
+            //class name
 			final HTMLElement tr = tbody.tr();
 			final String link = index.getLinkToClass(e.getId());
 			final String qualifiedName = names.getQualifiedClassName(e
@@ -139,6 +142,7 @@ public class SessionsPage extends ReportPage {
 			} else {
 				tr.td().a(link, Styles.EL_CLASS).text(qualifiedName);
 			}
+			//id
 			final String id = String.format("%016x", Long.valueOf(e.getId()));
 			tr.td().code().text(id);
 		}

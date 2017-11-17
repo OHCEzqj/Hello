@@ -43,7 +43,9 @@ public abstract class NodePage<NodeType extends ICoverageNode> extends
 	 */
 	protected NodePage(final NodeType node, final ReportPage parent,
 			final ReportOutputFolder folder, final IHTMLReportContext context) {
+		
 		super(parent, folder, context);
+		System.out.println("NodePage 构造函数");
 		this.node = node;
 	}
 
@@ -58,12 +60,14 @@ public abstract class NodePage<NodeType extends ICoverageNode> extends
 	}
 
 	public String getLinkLabel() {
+		System.out.println("NodePage getLinkLabel() node.getName()：		"+node.getName());
 		return node.getName();
 	}
 
 	// === ICoverageTableItem ===
 
 	public NodeType getNode() {
+		System.out.println("NodePage getNode()");
 		return node;
 	}
 

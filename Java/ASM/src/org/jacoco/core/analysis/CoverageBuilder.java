@@ -75,6 +75,7 @@ public class CoverageBuilder implements ICoverageVisitor {
 	 * @return bundle containing all classes and source files
 	 */
 	public IBundleCoverage getBundle(final String name) {
+		System.out.println("CoverageBuilder getBundle ");
 		return new BundleCoverageImpl(name, classes.values(),
 				sourcefiles.values());
 	}
@@ -97,10 +98,12 @@ public class CoverageBuilder implements ICoverageVisitor {
 
 	// === IStructureVisitor ===
 
-	public void visitCoverage(final IClassCoverage coverage) {
+	public void visitCoverage(final IClassCoverage coverage) {//classCoverage
+		System.out.println("CoverageBuilder visitCoverage");
 		// Only consider classes that actually contain code:
 		if (coverage.getInstructionCounter().getTotalCount() > 0) {
 			final String name = coverage.getName();
+			System.out.println("CoverageBuilder coverage.getName()	"+name);
 			final IClassCoverage dup = classes.put(name, coverage);
 			if (dup != null) {
 				if (dup.getId() != coverage.getId()) {
@@ -110,6 +113,7 @@ public class CoverageBuilder implements ICoverageVisitor {
 				}
 			} else {
 				final String source = coverage.getSourceFileName();
+					System.out.println("CoverageBuilder coverage.getName()	"+source);
 				if (source != null) {
 					final SourceFileCoverageImpl sourceFile = getSourceFile(
 							source, coverage.getPackageName());

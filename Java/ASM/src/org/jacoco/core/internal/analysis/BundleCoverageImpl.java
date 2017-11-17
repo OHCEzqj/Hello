@@ -43,8 +43,10 @@ public class BundleCoverageImpl extends CoverageNodeImpl implements
 	 */
 	public BundleCoverageImpl(final String name,
 			final Collection<IPackageCoverage> packages) {
+		//再次调用父类
 		super(ElementType.BUNDLE, name);
 		this.packages = packages;
+		System.out.println("BundleCoverageImpl increment(packages) ");
 		increment(packages);
 	}
 
@@ -62,19 +64,24 @@ public class BundleCoverageImpl extends CoverageNodeImpl implements
 	public BundleCoverageImpl(final String name,
 			final Collection<IClassCoverage> classes,
 			final Collection<ISourceFileCoverage> sourcefiles) {
+		//调用上面的构造函数
 		this(name, groupByPackage(classes, sourcefiles));
+		System.out.println("BundleCoverageImpl increment(packages) classes sourcefiles");
 	}
 
 	private static Collection<IPackageCoverage> groupByPackage(
 			final Collection<IClassCoverage> classes,
 			final Collection<ISourceFileCoverage> sourcefiles) {
+		System.out.println("BundleCoverageImpl groupByPackage");
 		final Map<String, Collection<IClassCoverage>> classesByPackage = new HashMap<String, Collection<IClassCoverage>>();
 		for (final IClassCoverage c : classes) {
+			System.out.println("BundleCoverageImpl addByName classes");
 			addByName(classesByPackage, c.getPackageName(), c);
 		}
 
 		final Map<String, Collection<ISourceFileCoverage>> sourceFilesByPackage = new HashMap<String, Collection<ISourceFileCoverage>>();
 		for (final ISourceFileCoverage s : sourcefiles) {
+			System.out.println("BundleCoverageImpl addByName sourcefiles");
 			addByName(sourceFilesByPackage, s.getPackageName(), s);
 		}
 
@@ -84,16 +91,25 @@ public class BundleCoverageImpl extends CoverageNodeImpl implements
 
 		final Collection<IPackageCoverage> result = new ArrayList<IPackageCoverage>();
 		for (final String name : packageNames) {
+			System.out.println("BundleCoverageImpl packageNames for");
+
 			Collection<IClassCoverage> c = classesByPackage.get(name);
 			if (c == null) {
+				//没进入
+				System.out.println("BundleCoverageImpl classesByPackage if");
 				c = Collections.emptyList();
 			}
+
 			Collection<ISourceFileCoverage> s = sourceFilesByPackage.get(name);
 			if (s == null) {
+				//没进入
+				System.out.println("BundleCoverageImpl sourceFilesByPackage if");
 				s = Collections.emptyList();
 			}
+
 			result.add(new PackageCoverageImpl(name, c, s));
 		}
+		System.out.println("BundleCoverageImpl groupByPackage end");
 		return result;
 	}
 
@@ -110,6 +126,7 @@ public class BundleCoverageImpl extends CoverageNodeImpl implements
 	// === IBundleCoverage implementation ===
 
 	public Collection<IPackageCoverage> getPackages() {
+		System.out.println("BundleCoverageImpl getPackages()");
 		return packages;
 	}
 

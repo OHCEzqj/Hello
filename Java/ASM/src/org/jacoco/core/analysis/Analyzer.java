@@ -93,6 +93,7 @@ public class Analyzer {
 			@Override
 			public void visitEnd() {
 				super.visitEnd();
+				System.out.println("Analyzer createAnalyzingVisitor visitEnd");
 				coverageVisitor.visitCoverage(coverage);
 			}
 		};

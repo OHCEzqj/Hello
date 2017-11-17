@@ -116,6 +116,7 @@ public class MethodAnalyzer extends MethodProbesVisitor
 	 * @return coverage data for this method
 	 */
 	public IMethodCoverage getCoverage() {
+		System.out.println("MethodAnalyzer getCoverage");
 		return coverage;
 	}
 
@@ -177,7 +178,7 @@ public class MethodAnalyzer extends MethodProbesVisitor
 
 	private void visitInsn() {
 		final Instruction insn = new Instruction(currentNode, currentLine);
-		System.out.println("MethodAnalyzer visitInsn:");
+		System.out.println("MethodAnalyzer 自带visitInsn:"+insn);
 		instructions.add(insn);
 		if (lastInsn != null) {
 			insn.setPredecessor(lastInsn);
@@ -194,65 +195,65 @@ public class MethodAnalyzer extends MethodProbesVisitor
 
 	@Override
 	public void visitInsn(final int opcode) {
-		System.out.println("MethodAnalyzer visitInsn:");
+		System.out.println("MethodAnalyzer visitInsn:"+opcode);
 		visitInsn();
 	}
 
 	@Override
 	public void visitIntInsn(final int opcode, final int operand) {
-		System.out.println("MethodAnalyzer visitIntInsn:");
+		System.out.println("MethodAnalyzer visitIntInsn:	"+"opcode:"+opcode+"operand"+operand);
 		visitInsn();
 	}
 
 	@Override
 	public void visitVarInsn(final int opcode, final int var) {
-		System.out.println("MethodAnalyzer visitVarInsn:");
+		System.out.println("MethodAnalyzer visitVarInsn:	"+"opcode"+opcode+"var"+var);
 		visitInsn();
 	}
 
 	@Override
 	public void visitTypeInsn(final int opcode, final String type) {
-		System.out.println("MethodAnalyzer visitTypeInsn:");
+		System.out.println("MethodAnalyzer visitTypeInsn:"+"opcode"+opcode+"type"+type);
 		visitInsn();
 	}
 
 	@Override
 	public void visitFieldInsn(final int opcode, final String owner,
 			final String name, final String desc) {
-		System.out.println("MethodAnalyzer visitFieldInsn:");
+		System.out.println("MethodAnalyzer visitFieldInsn:"+"opcode, owner,name, desc"+opcode+"	"+owner+"	"+name+"	"+desc);
 		visitInsn();
 	}
 
 	@Override
 	public void visitMethodInsn(final int opcode, final String owner,
 			final String name, final String desc, final boolean itf) {
-		System.out.println("MethodAnalyzer visitMethodInsn:");
+		System.out.println("MethodAnalyzer visitMethodInsn:"+"opcode, owner,name, desc"+opcode+"	"+owner+"	"+name+"	"+desc);
 		visitInsn();
 	}
 
 	@Override
 	public void visitInvokeDynamicInsn(final String name, final String desc,
 			final Handle bsm, final Object... bsmArgs) {
-		System.out.println("MethodAnalyzer visitInvokeDynamicInsn:");
+		System.out.println("MethodAnalyzer visitInvokeDynamicInsn:"+" name, desc"+"	"+"	"+name+"	"+desc);
 		visitInsn();
 	}
 
 	@Override
 	public void visitJumpInsn(final int opcode, final Label label) {
-		System.out.println("MethodAnalyzer visitJumpInsn:");
+		System.out.println("MethodAnalyzer visitJumpInsn:"+"opcode"+opcode+"label"+label);
 		visitInsn();
 		jumps.add(new Jump(lastInsn, label));
 	}
 
 	@Override
 	public void visitLdcInsn(final Object cst) {
-		System.out.println("MethodAnalyzer visitLdcInsn:");
+		System.out.println("MethodAnalyzer visitLdcInsn:"+"object"+cst);
 		visitInsn();
 	}
 
 	@Override
 	public void visitIincInsn(final int var, final int increment) {
-		System.out.println("MethodAnalyzer visitIincInsn:");
+		System.out.println("MethodAnalyzer visitIincInsn:"+"var"+var+"increment"+increment);
 		visitInsn();
 	}
 
@@ -375,9 +376,12 @@ public class MethodAnalyzer extends MethodProbesVisitor
 			System.out.println("MethodAnalyzer i.getCoveredBranches():	"+covered);
 			final ICounter instrCounter = covered == 0 ? CounterImpl.COUNTER_1_0
 					: CounterImpl.COUNTER_0_1;
+
+			//是否是if，有大于一个分支
 			final ICounter branchCounter = total > 1
 					? CounterImpl.getInstance(total - covered, covered)
 					: CounterImpl.COUNTER_0_0;
+
 			coverage.increment(instrCounter, branchCounter, i.getLine());
 		}
 		coverage.incrementMethodCounter();

@@ -115,14 +115,17 @@ public class HTMLFormatter implements IHTMLReportContext {
 	// === IHTMLReportContext ===
 
 	public ILanguageNames getLanguageNames() {
+		System.out.println("HTMLFormatter getLanguageNames()");
 		return languageNames;
 	}
 
 	public Resources getResources() {
+		System.out.println("HTMLFormatter getResources()");
 		return resources;
 	}
 
 	public Table getTable() {
+		System.out.println("HTMLFormatter getTable()");
 		if (table == null) {
 			table = createTable();
 		}
@@ -134,16 +137,34 @@ public class HTMLFormatter implements IHTMLReportContext {
 		t.add("Element", null, new LabelColumn(), false);
 		t.add("Missed Instructions", Styles.BAR, new BarColumn(CounterEntity.INSTRUCTION,
 				locale), true);
+		System.out.println("HTMLFormatter createTable Missed Instructions	"+CounterEntity.INSTRUCTION);
+		
+		
 		t.add("Cov.", Styles.CTR2,
 				new PercentageColumn(CounterEntity.INSTRUCTION, locale), false);
+
 		t.add("Missed Branches", Styles.BAR, new BarColumn(CounterEntity.BRANCH, locale),
 				false);
+		System.out.println("HTMLFormatter createTable Missed Branches	"+CounterEntity.BRANCH);
+		
+		
 		t.add("Cov.", Styles.CTR2, new PercentageColumn(CounterEntity.BRANCH, locale),
 				false);
+
 		addMissedTotalColumns(t, "Cxty", CounterEntity.COMPLEXITY);
+		System.out.println("HTMLFormatter createTable Missed COMPLEXITY	"+CounterEntity.COMPLEXITY);
+		
+
 		addMissedTotalColumns(t, "Lines", CounterEntity.LINE);
+		System.out.println("HTMLFormatter createTable Missed LINE	"+CounterEntity.LINE);
+		
+
 		addMissedTotalColumns(t, "Methods", CounterEntity.METHOD);
+		System.out.println("HTMLFormatter createTable Missed METHOD	"+CounterEntity.METHOD);
+		
+
 		addMissedTotalColumns(t, "Classes", CounterEntity.CLASS);
+		System.out.println("HTMLFormatter createTable Missed CLASS	"+CounterEntity.CLASS);
 		return t;
 	}
 
@@ -156,22 +177,27 @@ public class HTMLFormatter implements IHTMLReportContext {
 	}
 
 	public String getFooterText() {
+		System.out.println("HTMLFormatter getFooterText()");
 		return footerText;
 	}
 
 	public ILinkable getSessionsPage() {
+		System.out.println("HTMLFormatter getSessionsPage()");
 		return sessionsPage;
 	}
 
 	public String getOutputEncoding() {
+		System.out.println("HTMLFormatter getOutputEncoding()");
 		return outputEncoding;
 	}
 
 	public IIndexUpdate getIndexUpdate() {
+		System.out.println("HTMLFormatter getIndexUpdate()");
 		return index;
 	}
 
 	public Locale getLocale() {
+		System.out.println("HTMLFormatter getLocale()");
 		return locale;
 	}
 
@@ -206,6 +232,7 @@ public class HTMLFormatter implements IHTMLReportContext {
 
 			public void visitBundle(final IBundleCoverage bundle,
 					final ISourceFileLocator locator) throws IOException {
+				System.out.println("HTMLFormatter visitBundle");
 				final BundlePage page = new BundlePage(bundle, null, locator,
 						root, HTMLFormatter.this);
 				createSessionsPage(page);
@@ -214,6 +241,7 @@ public class HTMLFormatter implements IHTMLReportContext {
 
 			public IReportGroupVisitor visitGroup(final String name)
 					throws IOException {
+					System.out.println("HTMLFormatter visitGroup");	
 				groupHandler = new HTMLGroupVisitor(null, root,
 						HTMLFormatter.this, name);
 				createSessionsPage(groupHandler.getPage());
@@ -222,15 +250,21 @@ public class HTMLFormatter implements IHTMLReportContext {
 			}
 
 			private void createSessionsPage(final ReportPage rootpage) {
+				System.out.println("HTMLFormatter createSessionsPage");
 				sessionsPage = new SessionsPage(sessionInfos, executionData,
 						index, rootpage, root, HTMLFormatter.this);
+				System.out.println("HTMLFormatter createSessionsPage End");
 			}
 
 			public void visitEnd() throws IOException {
 				if (groupHandler != null) {
 					groupHandler.visitEnd();
 				}
+
+				System.out.println("HTMLFormatter sessionsPage.render()");
 				sessionsPage.render();
+				System.out.println("HTMLFormatter sessionsPage.render() End");
+
 				output.close();
 			}
 		};

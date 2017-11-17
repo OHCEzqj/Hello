@@ -45,7 +45,9 @@ public class HTMLDocument extends XMLDocument {
 	 */
 	public HTMLDocument(final Writer writer, final String encoding)
 			throws IOException {
+		
 		super(ROOT, PUBID, SYSTEM, encoding, false, writer);
+		System.out.println("HTMLDocument(final Writer writer, final String encoding)");
 		attr(XMLNS, XHTML_NAMESPACE_URL);
 	}
 
@@ -61,12 +63,15 @@ public class HTMLDocument extends XMLDocument {
 	 */
 	public HTMLDocument(final OutputStream output, final String encoding)
 			throws IOException {
+		
 		super(ROOT, PUBID, SYSTEM, encoding, false, output);
+		System.out.println("HTMLDocument(final Writer writer, final String encoding)");
 		attr(XMLNS, XHTML_NAMESPACE_URL);
 	}
 
 	@Override
 	public HTMLElement element(final String name) throws IOException {
+        System.out.println("HTMLElement element(final String name)	"+name);
 		final HTMLElement element = new HTMLElement(writer, name);
 		addChildElement(element);
 		return element;

@@ -59,6 +59,7 @@ public class CoverageNodeImpl implements ICoverageNode {
 		this.methodCounter = CounterImpl.COUNTER_0_0;
 		this.classCounter = CounterImpl.COUNTER_0_0;
 		this.lineCounter = CounterImpl.COUNTER_0_0;
+		System.out.println("CoverageNodeImpl 构造函数");
 	}
 
 	/**
@@ -68,6 +69,7 @@ public class CoverageNodeImpl implements ICoverageNode {
 	 *            counters to add
 	 */
 	public void increment(final ICoverageNode child) {
+		System.out.println("CoverageNodeImpl increment(final ICoverageNode child)");
 		instructionCounter = instructionCounter.increment(child
 				.getInstructionCounter());
 		branchCounter = branchCounter.increment(child.getBranchCounter());
@@ -86,6 +88,7 @@ public class CoverageNodeImpl implements ICoverageNode {
 	 *            list of nodes, which counters will be added to this node
 	 */
 	public void increment(final Collection<? extends ICoverageNode> children) {
+		System.out.println("CoverageNodeImpl increment(final Collection<? extends ICoverageNode> children)");
 		for (final ICoverageNode child : children) {
 			increment(child);
 		}
@@ -93,35 +96,48 @@ public class CoverageNodeImpl implements ICoverageNode {
 
 	// === ICoverageDataNode ===
 
+//节点类型
+//Type of a Java element represented by a {@link ICoverageNode} instance.
+	//这个CoverageNodeImpl对象所代表的节点类型，是 1.method; 2.class; 3.source file; 4.packagebundle; 5.group
 	public ElementType getElementType() {
+		System.out.println("CoverageNodeImpl getElementType	"+elementType);
 		return elementType;
 	}
 
+//节点名
+//Returns the name of this node.
 	public String getName() {
+		System.out.println("CoverageNodeImpl getName	"+name);
 		return name;
 	}
 
 	public ICounter getInstructionCounter() {
+			System.out.println("CoverageNodeImpl getInstructionCounter");
 		return instructionCounter;
 	}
 
 	public ICounter getBranchCounter() {
+			System.out.println("CoverageNodeImpl getBranchCounter");
 		return branchCounter;
 	}
 
 	public ICounter getLineCounter() {
+			System.out.println("CoverageNodeImpl getLineCounter");
 		return lineCounter;
 	}
 
 	public ICounter getComplexityCounter() {
+			System.out.println("CoverageNodeImpl getComplexityCounter");
 		return complexityCounter;
 	}
 
 	public ICounter getMethodCounter() {
+			System.out.println("CoverageNodeImpl getMethodCounter");
 		return methodCounter;
 	}
 
 	public ICounter getClassCounter() {
+			System.out.println("CoverageNodeImpl getClassCounter");
 		return classCounter;
 	}
 

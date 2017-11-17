@@ -49,6 +49,7 @@ public abstract class LineImpl implements ILine {
 
 	private static LineImpl getInstance(final CounterImpl instructions,
 			final CounterImpl branches) {
+		System.out.println("LineImpl getInstance");
 		final int im = instructions.getMissedCount();
 		final int ic = instructions.getCoveredCount();
 		final int bm = branches.getMissedCount();
@@ -71,6 +72,7 @@ public abstract class LineImpl implements ILine {
 		@Override
 		public LineImpl increment(final ICounter instructions,
 				final ICounter branches) {
+			System.out.println("LineImpl Var increment");
 			this.instructions = this.instructions.increment(instructions);
 			this.branches = this.branches.increment(branches);
 			return this;
@@ -89,6 +91,8 @@ public abstract class LineImpl implements ILine {
 		@Override
 		public LineImpl increment(final ICounter instructions,
 				final ICounter branches) {
+			System.out.println("LineImpl Fix increment");
+			//进入了Counter 对instructions和branches进行了increment
 			return getInstance(this.instructions.increment(instructions),
 					this.branches.increment(branches));
 		}
@@ -103,6 +107,7 @@ public abstract class LineImpl implements ILine {
 	private LineImpl(final CounterImpl instructions, final CounterImpl branches) {
 		this.instructions = instructions;
 		this.branches = branches;
+		System.out.println("LineImpl 初始化函数");
 	}
 
 	/**
@@ -124,10 +129,12 @@ public abstract class LineImpl implements ILine {
 	}
 
 	public ICounter getInstructionCounter() {
+		System.out.println("LineImpl ICounter getInstructionCounter()");
 		return instructions;
 	}
 
 	public ICounter getBranchCounter() {
+		System.out.println("LineImpl ICounter getBranchCounter()");
 		return branches;
 	}
 

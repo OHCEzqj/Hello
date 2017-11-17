@@ -46,6 +46,7 @@ public class ClassPage extends TablePage<IClassCoverage> {
 			final IHTMLReportContext context) {
 		super(classNode, parent, folder, context);
 		this.sourcePage = sourcePage;
+		System.out.println("ClassPage");
 		context.getIndexUpdate().addClass(this, classNode.getId());
 	}
 
@@ -56,10 +57,13 @@ public class ClassPage extends TablePage<IClassCoverage> {
 
 	@Override
 	public void render() throws IOException {
-		for (final IMethodCoverage m : getNode().getMethods()) {
+      System.out.println("ClassPage render()");
+      
+		for (final IMethodCoverage m : getNode().getMethods()) {	
 			final String label = context.getLanguageNames().getMethodName(
 					getNode().getName(), m.getName(), m.getDesc(),
 					m.getSignature());
+			System.out.println("ClassPage render label	"+label);
 			addItem(new MethodItem(m, label, sourcePage));
 		}
 		super.render();
@@ -70,7 +74,9 @@ public class ClassPage extends TablePage<IClassCoverage> {
 		final String vmname = getNode().getName();
 		final int pos = vmname.lastIndexOf('/');
 		final String shortname = pos == -1 ? vmname : vmname.substring(pos + 1);
+		System.out.println("ClassPage getFileName"+shortname+ ".html");
 		return shortname + ".html";
+		
 	}
 
 	@Override

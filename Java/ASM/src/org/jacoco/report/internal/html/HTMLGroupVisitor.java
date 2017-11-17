@@ -52,6 +52,7 @@ public class HTMLGroupVisitor extends AbstractGroupVisitor {
 		super(name);
 		this.folder = folder;
 		this.context = context;
+		System.out.println("HTMLGroupVisitor 构造函数");	
 		page = new GroupPage(total, parent, folder, context);
 	}
 

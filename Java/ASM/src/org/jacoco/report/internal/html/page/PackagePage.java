@@ -49,6 +49,7 @@ public class PackagePage extends TablePage<IPackageCoverage> {
 			final ISourceFileLocator locator, final ReportOutputFolder folder,
 			final IHTMLReportContext context) {
 		super(node, parent, folder, context);
+		System.out.println("PackagePage index.html");
 		packageSourcePage = new PackageSourcePage(node, parent, locator,
 				folder, context, this);
 		sourceCoverageExists = !node.getSourceFiles().isEmpty();
@@ -56,6 +57,7 @@ public class PackagePage extends TablePage<IPackageCoverage> {
 
 	@Override
 	public void render() throws IOException {
+		System.out.println("PackagePage render");
 		if (sourceCoverageExists) {
 			packageSourcePage.render();
 		}
@@ -64,7 +66,9 @@ public class PackagePage extends TablePage<IPackageCoverage> {
 	}
 
 	private void renderClasses() throws IOException {
+		System.out.println("PackagePage renderClasses");
 		for (final IClassCoverage c : getNode().getClasses()) {
+			
 			final ILinkable sourceFilePage = packageSourcePage
 					.getSourceFilePage(c.getSourceFileName());
 			final ClassPage page = new ClassPage(c, this, sourceFilePage,

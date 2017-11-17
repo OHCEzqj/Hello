@@ -47,7 +47,10 @@ public class BundlePage extends TablePage<ICoverageNode> {
 	public BundlePage(final IBundleCoverage bundle, final ReportPage parent,
 			final ISourceFileLocator locator, final ReportOutputFolder folder,
 			final IHTMLReportContext context) {
+		
 		super(bundle.getPlainCopy(), parent, folder, context);
+		System.out.println("BundlePage 构造函数");
+		System.out.println("BundlePage index.html 已调用父类");
 		this.bundle = bundle;
 		this.locator = locator;
 	}
@@ -55,19 +58,36 @@ public class BundlePage extends TablePage<ICoverageNode> {
 	@Override
 	public void render() throws IOException {
 		renderPackages();
+
+		System.out.println("BundlePage renderPackages() End");
+
 		super.render();
+		System.out.println("BundlePage super.render() End");
 		// Don't keep the bundle structure in memory
 		bundle = null;
 	}
 
 	private void renderPackages() throws IOException {
+		System.out.println("BundlePage renderPackages");
 		for (final IPackageCoverage p : bundle.getPackages()) {
+			System.out.println("BundlePage bundle.getPackages() for");
+
+
 			final String packagename = p.getName();
+			System.out.println("BundlePage bundle.getPackages() p.getName()；	"+packagename);
+
+
 			final String foldername = packagename.length() == 0 ? "default"
 					: packagename.replace('/', '.');
+            System.out.println("BundlePage bundle.getPackages() p.getName()；	"+foldername);
+
+
 			final PackagePage page = new PackagePage(p, this, locator,
 					folder.subFolder(foldername), context);
+		
+
 			page.render();
+
 			addItem(page);
 		}
 	}

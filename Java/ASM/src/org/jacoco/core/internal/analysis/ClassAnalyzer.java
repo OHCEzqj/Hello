@@ -69,9 +69,11 @@ public class ClassAnalyzer extends ClassProbesVisitor {
 			@Override
 			public void visitEnd() {
 				super.visitEnd();
+				System.out.println("ClassAnalyzer getCoverage");
 				final IMethodCoverage methodCoverage = getCoverage();
 				if (methodCoverage.getInstructionCounter().getTotalCount() > 0) {
 					// Only consider methods that actually contain code
+					System.out.println("ClassAnalyzer coverage.addMethod");
 					coverage.addMethod(methodCoverage);
 				}
 			}

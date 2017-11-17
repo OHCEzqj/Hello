@@ -58,15 +58,18 @@ public class SourceNodeImpl extends CoverageNodeImpl implements ISourceNode {
 			offset = first;
 			lines = new LineImpl[last - first + 1];
 		} else {
+			System.out.println("SourceNodeImpl	ensureCapacity else");
 			final int newFirst = Math.min(getFirstLine(), first);
 			final int newLast = Math.max(getLastLine(), last);
 			final int newLength = newLast - newFirst + 1;
 			if (newLength > lines.length) {
+				System.out.println("SourceNodeImpl	ensureCapacity 更新lines长度");
 				final LineImpl[] newLines = new LineImpl[newLength];
 				System.arraycopy(lines, 0, newLines, offset - newFirst,
 						lines.length);
 				offset = newFirst;
 				lines = newLines;
+				System.out.println("SourceNodeImpl	ensureCapacity 结束");
 			}
 		}
 	}
@@ -80,6 +83,8 @@ public class SourceNodeImpl extends CoverageNodeImpl implements ISourceNode {
 	 *            child node to add
 	 */
 	public void increment(final ISourceNode child) {
+		System.out.println("SourceNodeImpl iincrement(final ISourceNode child)	");
+		//child 是MEthodCoverageImpl,getInstructionCounter函数是来自其父类的父类的函数（本类是MethodCoverageImpl的父类）
 		instructionCounter = instructionCounter.increment(child
 				.getInstructionCounter());
 		branchCounter = branchCounter.increment(child.getBranchCounter());
@@ -89,9 +94,12 @@ public class SourceNodeImpl extends CoverageNodeImpl implements ISourceNode {
 		classCounter = classCounter.increment(child.getClassCounter());
 		final int firstLine = child.getFirstLine();
 		if (firstLine != UNKNOWN_LINE) {
+			System.out.println("SourceNodeImpl iincrement(final ISourceNode child)	firstLine != UNKNOWN_LINE");
 			final int lastLine = child.getLastLine();
+
 			ensureCapacity(firstLine, lastLine);
 			for (int i = firstLine; i <= lastLine; i++) {
+				System.out.println("SourceNodeImpl iincrement(final ISourceNode child)	for");
 				final ILine line = child.getLine(i);
 				incrementLine(line.getInstructionCounter(),
 						line.getBranchCounter(), i);
@@ -113,52 +121,65 @@ public class SourceNodeImpl extends CoverageNodeImpl implements ISourceNode {
 	 */
 	public void increment(final ICounter instructions, final ICounter branches,
 			final int line) {
+		System.out.println("SourceNodeImpl increment (ICounter instructions, ICounter branches,int line)");
 		if (line != UNKNOWN_LINE) {
+			System.out.println("SourceNodeImpl	line != UNKNOWN_LINE");
 			incrementLine(instructions, branches, line);
 		}
+		System.out.println("SourceNodeImpl	instructionCounter.increment(instructions)");
 		instructionCounter = instructionCounter.increment(instructions);
+		System.out.println("SourceNodeImpl	branchCounter.increment(branches)");
 		branchCounter = branchCounter.increment(branches);
 	}
 
 	private void incrementLine(final ICounter instructions,
 			final ICounter branches, final int line) {
+		System.out.println("SourceNodeImpl incrementLine");
 		ensureCapacity(line, line);
 		final LineImpl l = getLine(line);
 		final int oldTotal = l.getInstructionCounter().getTotalCount();
 		final int oldCovered = l.getInstructionCounter().getCoveredCount();
+		
+		//进入lineLmpl，会有log
 		lines[line - offset] = l.increment(instructions, branches);
 
 		// Increment line counter:
 		if (instructions.getTotalCount() > 0) {
 			if (instructions.getCoveredCount() == 0) {
 				if (oldTotal == 0) {
+					System.out.println("11");
 					lineCounter = lineCounter
 							.increment(CounterImpl.COUNTER_1_0);
 				}
 			} else {
-				if (oldTotal == 0) {
+				if (oldTotal == 0) {//如果是新行，
+					System.out.println("22");
 					lineCounter = lineCounter
 							.increment(CounterImpl.COUNTER_0_1);
-				} else {
-					if (oldCovered == 0) {
+				} else {//如果是旧行
+					if (oldCovered == 0) {//如果这行之前的指令没有覆盖
+						System.out.println("33");
 						lineCounter = lineCounter.increment(-1, +1);
 					}
 				}
 			}
-		}
+		}//getTotalCount>0
 	}
 
 	// === ISourceNode implementation ===
 
 	public int getFirstLine() {
+		System.out.println("SourceNodeImpl getFirstLine	"+offset);
 		return offset;
 	}
 
 	public int getLastLine() {
+		System.out.println("SourceNodeImpl getLastLine	");
 		return lines == null ? UNKNOWN_LINE : (offset + lines.length - 1);
 	}
 
 	public LineImpl getLine(final int nr) {
+		System.out.println("SourceNodeImpl getLine	"+nr);
 		if (lines == null || nr < getFirstLine() || nr > getLastLine()) {
 			return LineImpl.EMPTY;
 		}
