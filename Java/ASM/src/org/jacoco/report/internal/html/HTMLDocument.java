@@ -96,6 +96,7 @@ public class HTMLDocument extends XMLDocument {
 	 *             in case of problems with the writer
 	 */
 	public HTMLElement body() throws IOException {
+		System.out.println("HTMLElement body() End");
 		return element("body");
 	}
 

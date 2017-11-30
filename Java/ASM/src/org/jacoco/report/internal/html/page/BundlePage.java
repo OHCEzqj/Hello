@@ -69,6 +69,7 @@ public class BundlePage extends TablePage<ICoverageNode> {
 
 	private void renderPackages() throws IOException {
 		System.out.println("BundlePage renderPackages");
+		
 		for (final IPackageCoverage p : bundle.getPackages()) {
 			System.out.println("BundlePage bundle.getPackages() for");
 

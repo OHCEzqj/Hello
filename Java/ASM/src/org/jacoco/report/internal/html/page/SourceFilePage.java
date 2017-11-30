@@ -55,6 +55,7 @@ public class SourceFilePage extends NodePage<ISourceNode> {
 		super(sourceFileNode, parent, folder, context);
 		this.sourceReader = sourceReader;
 		this.tabWidth = tabWidth;
+		System.out.println("SourceFilePage 构造函数");
 	}
 
 	@Override

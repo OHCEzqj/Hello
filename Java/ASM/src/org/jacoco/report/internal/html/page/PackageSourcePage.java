@@ -63,6 +63,7 @@ public class PackageSourcePage extends TablePage<IPackageCoverage> {
 
 	@Override
 	public void render() throws IOException {
+		System.out.println("PackageSourcePage render()");
 		renderSourceFilePages();
 		super.render();
 	}
@@ -77,36 +78,50 @@ public class PackageSourcePage extends TablePage<IPackageCoverage> {
 	}
 
 	private final void renderSourceFilePages() throws IOException {
+		System.out.println("PackageSourcePage renderSourceFilePages()");
+
 		final String packagename = getNode().getName();
+		System.out.println("PackageSourcePage renderSourceFilePages() for packagename"+packagename);
+
 		for (final ISourceFileCoverage s : getNode().getSourceFiles()) {
+			System.out.println("PackageSourcePage renderSourceFilePages() for");
+
 			final String sourcename = s.getName();
+
 			final Reader reader = locator
 					.getSourceFile(packagename, sourcename);
 			if (reader == null) {
+				System.out.println("PackageSourcePage renderSourceFilePages() for reader == null");
 				addItem(new SourceFileItem(s));
 			} else {
+				System.out.println("PackageSourcePage renderSourceFilePages() for reader != null");
 				final SourceFilePage sourcePage = new SourceFilePage(s, reader,
 						locator.getTabWidth(), this, folder, context);
+				//ReportPage render
 				sourcePage.render();
 				sourceFilePages.put(sourcename, sourcePage);
 				addItem(sourcePage);
 			}
 
 		}
+		
 	}
 
 	@Override
 	protected String getOnload() {
+		System.out.println("PackageSourcePage getOnload");
 		return "initialSort(['breadcrumb', 'coveragetable'])";
 	}
 
 	@Override
 	protected String getFileName() {
+		System.out.println("PackageSourcePage getFileName");
 		return "index.source.html";
 	}
 
 	@Override
 	public String getLinkLabel() {
+		System.out.println("PackageSourcePage getLinkLabel");
 		return context.getLanguageNames().getPackageName(getNode().getName());
 	}
 

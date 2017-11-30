@@ -67,6 +67,7 @@ public class PackageCoverageImpl extends CoverageNodeImpl implements
 	}
 
 	public Collection<ISourceFileCoverage> getSourceFiles() {
+		System.out.println("PackageCoverageImpl getSourceFiles()");
 		return sourceFiles;
 	}
 

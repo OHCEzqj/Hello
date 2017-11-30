@@ -60,13 +60,16 @@ public class ClassPage extends TablePage<IClassCoverage> {
       System.out.println("ClassPage render()");
       
 		for (final IMethodCoverage m : getNode().getMethods()) {	
+			 System.out.println("ClassPage render() getNode().getMethods()");
 			final String label = context.getLanguageNames().getMethodName(
 					getNode().getName(), m.getName(), m.getDesc(),
 					m.getSignature());
 			System.out.println("ClassPage render label	"+label);
 			addItem(new MethodItem(m, label, sourcePage));
+			 System.out.println("ClassPage render() getNode().getMethods() end");
 		}
 		super.render();
+  		System.out.println("ClassPage render()  end");
 	}
 
 	@Override

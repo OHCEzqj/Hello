@@ -77,11 +77,18 @@ public abstract class ReportPage implements ILinkable {
 
 		final HTMLDocument doc = new HTMLDocument(
 				folder.createFile(getFileName()), context.getOutputEncoding());
+        System.out.println("ReportPage HTMLDocument doc");
+
 		doc.attr("lang", context.getLocale().getLanguage());
+		System.out.println("ReportPage doc.attr End");
+
 		head(doc.head());
+		System.out.println("ReportPage head(doc.head()) End");
+
 		body(doc.body());
+		System.out.println("ReportPage body(doc.body())  End");
+
 		doc.close();
-		
 		System.out.println("ReportPage render End");
 	}
 
@@ -106,14 +113,32 @@ public abstract class ReportPage implements ILinkable {
 	}
 
 	private void body(final HTMLElement body) throws IOException {
+       System.out.println("ReportPage body");
+
 		body.attr("onload", getOnload());
+		System.out.println("1 ReportPage body body.attr End");
+
 		final HTMLElement navigation = body.div(Styles.BREADCRUMB);
+		System.out.println("2 ReportPage body HTMLElement navigation end");
+
 		navigation.attr("id", "breadcrumb");
+		System.out.println("3 ReportPage body navigation.attr end");
+
 		infoLinks(navigation.span(Styles.INFO));
+		System.out.println("4 ReportPage body infoLinks end");
+
 		breadcrumb(navigation, folder);
+		System.out.println("5 ReportPage body breadcrumb end");
+
 		body.h1().text(getLinkLabel());
-		content(body);
+		System.out.println("6 ReportPage body body.h1().text(getLinkLabel()) end");
+
+		content(body);//keypoint
+		System.out.println("7 ReportPage body content(body) end");
+
 		footer(body);
+
+		System.out.println("ReportPage body End");
 	}
 
 	/**
@@ -156,7 +181,7 @@ public abstract class ReportPage implements ILinkable {
 	private void footer(final HTMLElement body) throws IOException {
 		final HTMLElement footer = body.div(Styles.FOOTER);
 		final HTMLElement versioninfo = footer.span(Styles.RIGHT);
-		versioninfo.text("Created with ");
+		versioninfo.text(" ReportPage Created with ");
 		versioninfo.a(JaCoCo.HOMEURL).text("JaCoCo");
 		versioninfo.text(" ").text(JaCoCo.VERSION);
 		footer.text(context.getFooterText());

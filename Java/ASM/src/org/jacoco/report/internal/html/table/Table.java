@@ -36,6 +36,7 @@ public class Table {
 	 * Create a new table without any columns yet.
 	 */
 	public Table() {
+		System.out.println("Table 构造函数");
 		this.columns = new ArrayList<Table.Column>();
 	}
 
@@ -92,11 +93,22 @@ public class Table {
 		System.out.println("Table render");
 		
 		final List<? extends ITableItem> sortedItems = sort(items);
+		System.out.println("1 Table render");
+
 		final HTMLElement table = parent.table(Styles.COVERAGETABLE);
+		System.out.println("2 Table render");
+
 		table.attr("id", "coveragetable");
+		System.out.println("3 Table render");
+
 		header(table, sortedItems, total);
+		System.out.println("4 Table render");
+
 		footer(table, total, resources, base);
+		System.out.println("5 Table render");
+
 		body(table, sortedItems, resources, base);
+		System.out.println("6 Table render");
 	}
 
 	private void header(final HTMLElement table,

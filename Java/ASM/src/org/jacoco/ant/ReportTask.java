@@ -13,10 +13,12 @@ package org.jacoco.ant;
 
 import static java.lang.String.format;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -35,7 +37,13 @@ import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.analysis.IClassCoverage;
+import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.ICoverageNode;
+import org.jacoco.core.analysis.ICoverageNode.CounterEntity;
+import org.jacoco.core.analysis.ILine;
+import org.jacoco.core.analysis.IMethodCoverage;
+import org.jacoco.core.analysis.IPackageCoverage;
+import org.jacoco.core.analysis.ISourceFileCoverage;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.tools.ExecFileLoader;
@@ -43,6 +51,7 @@ import org.jacoco.report.FileMultiReportOutput;
 import org.jacoco.report.IMultiReportOutput;
 import org.jacoco.report.IReportGroupVisitor;
 import org.jacoco.report.IReportVisitor;
+import org.jacoco.report.ISourceFileLocator;
 import org.jacoco.report.MultiReportVisitor;
 import org.jacoco.report.ZipMultiReportOutput;
 import org.jacoco.report.check.IViolationsOutput;
@@ -51,7 +60,9 @@ import org.jacoco.report.check.Rule;
 import org.jacoco.report.check.RulesChecker;
 import org.jacoco.report.csv.CSVFormatter;
 import org.jacoco.report.html.HTMLFormatter;
+import org.jacoco.report.internal.html.page.PackageSourcePage;
 import org.jacoco.report.xml.XMLFormatter;
+import org.w3c.dom.css.Counter;
 
 /**
  * Task for coverage report generation.
@@ -542,6 +553,11 @@ public class ReportTask extends Task {
 		if (group.children.isEmpty()) {
 			final IBundleCoverage bundle = createBundle(group);
 
+
+       
+			
+
+
             System.out.println("ReportTask SourceFilesElement sourcefiles");
 			final SourceFilesElement sourcefiles = group.sourcefiles;
 
@@ -558,12 +574,67 @@ public class ReportTask extends Task {
 			}
 
 			visitor.visitBundle(bundle, locator);
+			//产生自己的信息
+			generate(bundle,locator);
 		} else {
 			final IReportGroupVisitor groupVisitor = visitor
 					.visitGroup(group.name);
 			for (final GroupElement child : group.children) {
 				 System.out.println("ReportTask createReport(groupVisitor, child)");
 				createReport(groupVisitor, child);
+			}
+		}
+		
+	}
+
+	private void generate(IBundleCoverage bundle,ISourceFileLocator locator) throws IOException{
+		// TODO Auto-generated method stub
+		 //尝试直接输出覆盖率
+		ICounter bCounter=bundle.getCounter(CounterEntity.INSTRUCTION);
+		System.out.println("bundle total:  "+bCounter.getTotalCount());
+		System.out.println("bundle covered:  "+bCounter.getCoveredCount());
+	
+		for(IPackageCoverage p : bundle.getPackages()){
+			String packagename=p.getName();
+			System.out.println("generate package name:  "+packagename);
+			//覆盖具体位置
+			for(ISourceFileCoverage s:p.getSourceFiles()){
+				String sourcename=s.getName();
+				System.out.println("generate source name:  "+sourcename);
+				
+				Reader reader=locator.getSourceFile(packagename, sourcename);
+				
+				if(reader!=null){
+				BufferedReader lineBuffer=new BufferedReader(reader);
+				int nr=1;
+				
+				while((lineBuffer.readLine())!=null){
+					
+					ILine line=s.getLine(nr);
+					System.out.println("每行总信息：    "+line.getInstructionCounter().getTotalCount());
+					if(line.getStatus()==ICounter.FULLY_COVERED||line.getStatus()==ICounter.PARTLY_COVERED){
+						System.out.println("行号：    "+nr);
+					}
+					nr+=1;
+				}
+				}
+			}
+			
+			//package覆盖率
+			ICounter pCounter=p.getCounter(CounterEntity.INSTRUCTION);
+			System.out.println("package total:  "+pCounter.getTotalCount());
+			System.out.println("package covered:  "+pCounter.getCoveredCount());
+			
+			for(IClassCoverage c :p.getClasses()){
+				ICounter cCounter=c.getCounter(CounterEntity.INSTRUCTION);
+				System.out.println("Class total:  "+cCounter.getTotalCount());
+				System.out.println("Class covered:  "+cCounter.getCoveredCount());
+				for(IMethodCoverage m :c.getMethods()){
+					ICounter mCounter=m.getCounter(CounterEntity.INSTRUCTION);
+					System.out.println("Method total:  "+mCounter.getTotalCount());
+					System.out.println("Method covered:  "+mCounter.getCoveredCount());
+				}
+				
 			}
 		}
 	}
